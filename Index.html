@@ -708,17 +708,19 @@ window.addEventListener('resize', () => {
 document.addEventListener(
   'visibilitychange',
   () => {
-    if (document.hidden) {
-      saveGame();
-    }
-  }
-);
-
-window.addEventListener('pagehide', saveGame);
+    if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./sw.js")
+      .catch(error => console.log(error));
+  });
+}
 
 updateUI();
 
 saveGame();
+
+</script>
 
 </script>
 </body>
