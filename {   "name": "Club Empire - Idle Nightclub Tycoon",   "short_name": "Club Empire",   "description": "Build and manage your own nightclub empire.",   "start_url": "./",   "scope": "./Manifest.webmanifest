@@ -1,0 +1,12 @@
+
+{
+  "name": "Club Empire - Idle Nightclub Tycoon",
+  "short_name": "Club Empire",
+  "description": "Build and manage your own nightclub empire.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#10091f",
+  "theme_color": "#10091f"
+}
