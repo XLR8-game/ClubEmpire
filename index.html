@@ -705,10 +705,11 @@ window.addEventListener('resize', () => {
 // SAVE ON EXIT
 // ---------------------------
 
-document.addEventListener(
-  'visibilitychange',
-  () => {
-    if ("serviceWorker" in navigator) {
+// SAVE ON EXIT
+
+window.addEventListener('pagehide', saveGame);
+
+if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
       .register("./sw.js")
@@ -717,10 +718,7 @@ document.addEventListener(
 }
 
 updateUI();
-
 saveGame();
-
-</script>
 
 </script>
 </body>
