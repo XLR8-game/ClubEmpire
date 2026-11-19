@@ -608,6 +608,183 @@ $('expand').addEventListener('click', () => {
   saveGame();
 });
 
+// ===========================
+// CLUB EMPIRE - BAR BUSINESS
+// ===========================
+
+// 3D BAR DISPLAY
+const barGroup = new THREE.Group();
+scene.add(barGroup);
+
+function barPart(parent, w, h, d, x, y, z, mat) {
+  const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(w, h, d),
+    mat
+  );
+  mesh.position.set(x, y, z);
+  parent.add(mesh);
+  return mesh;
+}
+
+// Neon shelf behind the counter
+barPart(barGroup, 3, 0.12, 0.35,
+  -4.2, 1.9, -0.8, gold);
+
+barPart(barGroup, 3.1, 0.08, 0.12,
+  -4.2, 1.7, -0.8, pink);
+
+// Bottles
+for (let i = 0; i < 6; i++) {
+  const bottle = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.07, 0.09, 0.42, 8),
+    material(
+      [0x00ccff, 0xff168a, 0x39dcaa][i % 3]
+    )
+  );
+
+  bottle.position.set(
+    -5.35 + i * 0.46,
+    1.48,
+    -0.8
+  );
+
+  barGroup.add(bottle);
+}
+
+// Bartender character
+const bartenderGroup = new THREE.Group();
+barGroup.add(bartenderGroup);
+
+const bartenderBody = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.18, 0.22, 0.7, 8),
+  material(0xffffff)
+);
+bartenderBody.position.set(-4.2, 1.35, -0.85);
+bartenderGroup.add(bartenderBody);
+
+const bartenderHead = new THREE.Mesh(
+  new THREE.SphereGeometry(0.18, 12, 10),
+  material(0xffc99e)
+);
+bartenderHead.position.set(-4.2, 1.82, -0.85);
+bartenderGroup.add(bartenderHead);
+
+const bartenderHair = new THREE.Mesh(
+  new THREE.SphereGeometry(0.185, 12, 8),
+  black
+);
+bartenderHair.position.set(-4.2, 1.91, -0.85);
+bartenderGroup.add(bartenderHair);
+
+// Hide the new bar until purchased
+barGroup.visible = data.barBuilt === 1;
+bartenderGroup.visible = data.bartender === 1;
+
+// BUILD BAR
+$('buildBar').addEventListener('click', () => {
+  if (data.barBuilt === 1) return;
+
+  if (data.cash < 1000) {
+    message('You need $1,000 to build the bar!');
+    return;
+  }
+
+  data.cash -= 1000;
+  data.barBuilt = 1;
+  barGroup.visible = true;
+
+  message('Your neon bar is now open!');
+  updateUI();
+  saveGame();
+});
+
+// HIRE BARTENDER
+$('hireBartender').addEventListener('click', () => {
+  if (data.barBuilt !== 1) {
+    message('Build your bar first!');
+    return;
+  }
+
+  if (data.bartender === 1) return;
+
+  if (data.cash < 500) {
+    message('You need $500 to hire a bartender!');
+    return;
+  }
+
+  data.cash -= 500;
+  data.bartender = 1;
+  data.income += 3;
+
+  bartenderGroup.visible = true;
+
+  message('Bartender hired! +$3/sec income!');
+  updateUI();
+  saveGame();
+});
+
+// UPGRADE BAR
+$('upgradeBar').addEventListener('click', () => {
+  if (data.bartender !== 1) {
+    message('Hire a bartender first!');
+    return;
+  }
+
+  if (data.barLevel >= 1) {
+    message('Your bar is already upgraded!');
+    return;
+  }
+
+  if (data.cash < 1500) {
+    message('You need $1,500 for the bar upgrade!');
+    return;
+  }
+
+  data.cash -= 1500;
+  data.barLevel = 1;
+  data.income += 5;
+
+  barGroup.scale.set(1.08, 1.08, 1.08);
+
+  message('Premium bar unlocked! +$5/sec!');
+  updateUI();
+  saveGame();
+});
+
+// UPDATE BAR BUTTONS
+function syncBarButtons() {
+  const build = $('buildBar');
+  const hire = $('hireBartender');
+  const upgrade = $('upgradeBar');
+
+  build.textContent = data.barBuilt
+    ? '✅ BAR BUILT'
+    : '🍹 BUILD BAR — $1,000';
+
+  hire.textContent = data.bartender
+    ? '✅ BARTENDER HIRED'
+    : '🧑‍🍳 HIRE BARTENDER — $500';
+
+  upgrade.textContent = data.barLevel
+    ? '✅ BAR UPGRADED'
+    : '⭐ UPGRADE BAR — $1,500';
+
+  build.disabled = data.barBuilt === 1 || data.cash < 1000;
+
+  hire.disabled =
+    data.barBuilt !== 1 ||
+    data.bartender === 1 ||
+    data.cash < 500;
+
+  upgrade.disabled =
+    data.bartender !== 1 ||
+    data.barLevel >= 1 ||
+    data.cash < 1500;
+}
+
+setInterval(syncBarButtons, 1000);
+syncBarButtons();
+
 // ---------------------------
 // IDLE ECONOMY
 // ---------------------------
