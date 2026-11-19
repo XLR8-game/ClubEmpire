@@ -674,21 +674,21 @@ const bartenderBody = new THREE.Mesh(
   new THREE.CylinderGeometry(0.18, 0.22, 0.7, 10),
   material(0xffffff)
 );
-bartenderBody.position.set(-2.45, 0.42, -0.65);
+bartenderBody.position.set(-2.45, 1.35, -0.65);
 bartenderGroup.add(bartenderBody);
 
 const bartenderHead = new THREE.Mesh(
   new THREE.SphereGeometry(0.18, 12, 10),
   material(0xffc99e)
 );
-bartenderHead.position.set(-2.45, 0.91, -0.65);
+bartenderHead.position.set(-2.45, 1.35, -0.65);
 bartenderGroup.add(bartenderHead);
 
 const bartenderHair = new THREE.Mesh(
   new THREE.SphereGeometry(0.185, 12, 8),
   black
 );
-bartenderHair.position.set(-2.45, 0.99, -0.65);
+bartenderHair.position.set(-2.45, 1.35, -0.65);
 bartenderGroup.add(bartenderHair);
 
 // Hide the new bar until purchased
