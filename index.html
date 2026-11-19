@@ -633,7 +633,6 @@ barPart(barGroup, 3, 0.12, 0.35,
 barPart(barGroup, 3.1, 0.08, 0.12,
   -4.2, 1.7, -0.8, pink);
 
-
  // BOTTLES - POSITIONED ON THE COUNTER
 
 const bottleColors = [
@@ -644,57 +643,53 @@ const bottleColors = [
 for (let i = 0; i < 6; i++) {
   const x = -5.35 + i * 0.46;
 
-  // Bottle body
   const bottleBody = new THREE.Mesh(
     new THREE.CylinderGeometry(0.09, 0.11, 0.34, 12),
-    material(bottleColors[i]);
-
+    material(bottleColors[i])
+  );
   bottleBody.position.set(x, 1.22, -0.12);
   barGroup.add(bottleBody);
 
-  // Bottle neck
   const bottleNeck = new THREE.Mesh(
     new THREE.CylinderGeometry(0.045, 0.06, 0.13, 10),
-    material(bottleColors[i]);
-
+    material(bottleColors[i])
+  );
   bottleNeck.position.set(x, 1.45, -0.12);
   barGroup.add(bottleNeck);
 
-  // Bottle cap
   const cap = new THREE.Mesh(
     new THREE.CylinderGeometry(0.045, 0.045, 0.045, 10),
-    gold);
-
+    gold
+  );
   cap.position.set(x, 1.535, -0.12);
   barGroup.add(cap);
 }
 
-// BARTENDER - MOVED TO RIGHT SIDE OF BAR
+// BARTENDER - RIGHT SIDE OF BAR
 
 const bartenderGroup = new THREE.Group();
 barGroup.add(bartenderGroup);
 
 const bartenderBody = new THREE.Mesh(
   new THREE.CylinderGeometry(0.18, 0.22, 0.7, 10),
-  material(0xffffff);
-
+  material(0xffffff)
+);
 bartenderBody.position.set(-2.45, 0.42, -0.65);
 bartenderGroup.add(bartenderBody);
 
 const bartenderHead = new THREE.Mesh(
   new THREE.SphereGeometry(0.18, 12, 10),
-  material(0xffc99e);
-
+  material(0xffc99e)
+);
 bartenderHead.position.set(-2.45, 0.91, -0.65);
 bartenderGroup.add(bartenderHead);
 
 const bartenderHair = new THREE.Mesh(
   new THREE.SphereGeometry(0.185, 12, 8),
-  black);
-
+  black
+);
 bartenderHair.position.set(-2.45, 0.99, -0.65);
 bartenderGroup.add(bartenderHair);
-
 
 // Hide the new bar until purchased
 barGroup.visible = data.barBuilt === 1;
